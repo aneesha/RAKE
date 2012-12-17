@@ -5,6 +5,8 @@
 # In M. W. Berry and J. Kogan (Eds.), Text Mining: Applications and Theory.unknown: John Wiley and Sons, Ltd.
 
 import re
+import operator
+import math
 
 # Utility function to load stop words from a file and return as a list of words
 # @param stopWordFile Path and file name of a file containing stop words.
@@ -88,7 +90,8 @@ text = "Compatibility of systems of linear constraints over the set of natural n
 
 # Split text into sentences
 sentenceList = splitSentences(text)
-stoppath = "FoxStoplist.txt" 
+#stoppath = "FoxStoplist.txt" #Fox stoplist contains "numbers", so it will not find "natural numbers" like in Table 1.1
+stoppath = "SmartStoplist.txt" #SMART stoplist misses some of the lower-scoring keywords in Figure 1.5, which means that the top 1/3 cuts off one of the 4.0 score words in Table 1.1
 stopwordpattern = buildStopwordRegExPattern(stoppath)
 
 # generate candidate keywords
@@ -99,5 +102,11 @@ wordscores = calculateWordScores(phraseList)
 
 # generate candidate keyword scores
 keywordcandidates = generateCandidateKeywordScores(phraseList, wordscores)
+#print keywordcandidates
 
-print keywordcandidates
+sortedKeywords = sorted(keywordcandidates.iteritems(), key=operator.itemgetter(1), reverse=True)
+#print sortedKeywords
+
+totalKeywords = len(sortedKeywords)
+#print totalKeywords
+print sortedKeywords[0:(totalKeywords/3)]
