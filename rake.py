@@ -12,8 +12,9 @@ import re
 def loadStopWords(stopWordFile):
     stopWords = []
     for line in open(stopWordFile):
-        for word in line.split( ): #in case more than one per line
-            stopWords.append(word)
+        if (line.strip()[0:1] != "#"):
+            for word in line.split( ): #in case more than one per line
+                stopWords.append(word)
     return stopWords
 
 # Utility function to return a list of all words that are have a length greater than a specified number of characters.
@@ -87,7 +88,7 @@ text = "Compatibility of systems of linear constraints over the set of natural n
 
 # Split text into sentences
 sentenceList = splitSentences(text)
-stoppath = "englishstop.txt" 
+stoppath = "FoxStoplist.txt" 
 stopwordpattern = buildStopwordRegExPattern(stoppath)
 
 # generate candidate keywords
