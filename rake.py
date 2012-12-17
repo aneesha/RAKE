@@ -45,7 +45,9 @@ def generateCandidateKeywords(stopwordpattern):
 		tmp = re.sub(stopwordpattern, '|', s.strip())
 		phrases = tmp.split("|")
 		for phrase in phrases:
-			phraseList.append(phrase);
+			phrase = phrase.strip().lower()
+			if (phrase!=""):
+				phraseList.append(phrase)
 	return phraseList
 
 def calculateWordScores(phraseList):
@@ -55,13 +57,11 @@ def calculateWordScores(phraseList):
 		wordlist = separatewords(phrase,0) 
 		wordlistlength = len(wordlist)
 		wordlistdegree = wordlistlength - 1
-		for singleWord in wordlist:
-			word = singleWord.lower().strip()
-			if (word!=""):
-				wordfreq.setdefault(word,0)
-				wordfreq[word] += 1
-				worddegree.setdefault(word,0)
-				worddegree[word] += wordlistdegree
+		for word in wordlist:
+			wordfreq.setdefault(word,0)
+			wordfreq[word] += 1
+			worddegree.setdefault(word,0)
+			worddegree[word] += wordlistdegree
 	for item in wordfreq:
 		worddegree[item] = worddegree[item]+wordfreq[item] 	
 
@@ -78,10 +78,8 @@ def generateCandidateKeywordScores(phraseList, wordscore):
 		keywordcandidates.setdefault(phrase,0)
 		wordlist = separatewords(phrase,0) 
 		candidatescore = 0
-		for singleWord in wordlist:
-			word = singleWord.lower().strip()
-			if (word!=""):
-				candidatescore += wordscore[word]
+		for word in wordlist:
+			candidatescore += wordscore[word]
 		keywordcandidates[phrase] = candidatescore
 	return keywordcandidates
 
