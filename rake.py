@@ -54,7 +54,7 @@ def split_sentences(text):
     Utility function to return a list of sentences.
     @param text The text that must be split in to sentences.
     """
-    sentence_delimiters = re.compile(u'[.!?,;:\t\\\\"\\(\\)\\\'\u2019\u2013]|\s\-\s')
+    sentence_delimiters = re.compile(u'[.!?,;:\t\\\\"\\(\\)\\\'\u2019\u2013]|\\s\\-\\s')
     sentences = sentence_delimiters.split(text)
     return sentences
 
@@ -63,7 +63,7 @@ def build_stop_word_regex(stop_word_file_path):
     stop_word_list = load_stop_words(stop_word_file_path)
     stop_word_regex_list = []
     for word in stop_word_list:
-        word_regex = '\\b' + word + '\\b'
+        word_regex = r'\b' + word + r'(?![\w-])'  # added look ahead for hyphen
         stop_word_regex_list.append(word_regex)
     stop_word_pattern = re.compile('|'.join(stop_word_regex_list), re.IGNORECASE)
     return stop_word_pattern
